@@ -39,7 +39,7 @@ module.exports = function (gulp, plugin) {
   })
 
   gulp.task('test', function (cb) {
-    series('build', 'test:run', 'lint', cb)
+    series('test:run', 'lint', cb)
   })
 
   gulp.task('lint', function () {
