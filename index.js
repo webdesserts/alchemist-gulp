@@ -11,7 +11,7 @@ module.exports = function (gulp, plugin) {
   gulp.task('clean', del.bind(null, ['.tmp', 'dist']))
 
   gulp.task('build:min', ['build:web'], function () {
-    return gulp.src('dist/alchemist'+ plugin.name + '.js')
+    return gulp.src('dist/alchemist-'+ plugin.name + '.js')
     .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('dist'))
