@@ -52,9 +52,9 @@ module.exports = function (gulp, plugin) {
     gulp.watch(['gulpfile.js', '.jscsrc', 'test/*.js', 'index.js'], ['lint'])
   })
 
-  gulp.task('default', ['test'], function () {
-    gulp.watch('test/*.js', ['test'])
-    gulp.watch('index.js', ['test', 'lint'])
+  gulp.task('default', ['lint', 'test'], function () {
+    gulp.watch(['gulpfile.js', '.jscsrc', 'test/*.js', 'index.js'], ['lint'])
+    gulp.watch(['test/*.js', 'index.js'], ['test'])
   })
 
   function warn (err) {
