@@ -1,6 +1,6 @@
 {
   "name": "alchemist-gulp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "default build tool for alchemist plugins",
   "main": "index.js",
   "scripts": {
