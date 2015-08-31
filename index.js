@@ -1,65 +1,82 @@
-module.exports = function (gulp, plugin) {
-  var del = require('del')
-  var series = require('run-sequence').use(gulp)
-  var jscs = require("gulp-jscs")
-  var mocha = require("gulp-mocha")
-  var rename = require("gulp-rename")
-  var uglify = require("gulp-uglify")
-  var webpack = require("gulp-webpack")
+import Summary from 'gulp-summary'
+import DefaultRegistry from 'undertaker-registry'
 
-
-  gulp.task('clean', del.bind(null, ['.tmp', 'dist']))
-
-  gulp.task('build:min', ['build:web'], function () {
-    return gulp.src('dist/alchemist-'+ plugin.name + '.js')
-    .pipe(uglify())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest('dist'))
-  })
-
-  gulp.task('build:web', function () {
-    return gulp.src('index.js')
-    .pipe(webpack({
-      output: {
-        filename: 'alchemist-' + plugin.name + '.js',
-        libraryTarget: 'umd',
-        library: 'alchemist_' + plugin.name,
-        sourcePrefix: ''
-      }
-    }))
-    .pipe(gulp.dest('dist'))
-  })
-
-  gulp.task('build', ['build:web', 'build:min'])
-
-  gulp.task('test:run', function () {
-    return gulp.src('test/*.js')
-    .pipe(mocha({ reporter: 'spec' }))
-    .on('error', warn)
-  })
-
-  gulp.task('test', function (cb) {
-    series('test:run', 'lint', cb)
-  })
-
-  gulp.task('lint', function () {
-    return gulp.src(['gulpfile.js', 'test/*.js', 'index.js'])
-    .pipe(jscs())
-    .on('error', warn)
-  })
-
-  gulp.task('watch:lint', ['lint'], function () {
-    gulp.watch(['gulpfile.js', '.jscsrc', 'test/*.js', 'index.js'], ['lint'])
-  })
-
-  gulp.task('default', ['lint', 'test'], function () {
-    gulp.watch(['gulpfile.js', '.jscsrc'], ['lint'])
-    gulp.watch(['test/*.js', 'index.js'], ['lint', 'test'])
-  })
-
-  function warn (err) {
-    console.warn(err.message)
-    this.emit('end')
+class PluginRegistry extends DefaultRegistry {
+  constructor (config) {
+    super()
+    this.config = config
   }
 
+  init (gulp) {
+    var summary = new Summary(gulp)
+    summary.configure(this.config)
+
+    /*======*\
+    *  Main  *
+    \*======*/
+
+    summary.define({
+      command: 'default',
+      description: 'test, lint, and build the project',
+      task: require('./tasks/default')
+    })
+
+    summary.define({
+      command: 'dev',
+      description: 'test, lint, and build the project as you develop',
+      task: require('./tasks/dev')
+    })
+
+    summary.define({
+      command: 'build',
+      description: 'build the project for both node and the browser',
+      task: require('./tasks/build')
+    })
+
+    summary.define({
+      command: 'test',
+      description: 'run all tests',
+      task: require('./tasks/test')
+    })
+
+    summary.define({
+      command: 'lint',
+      description: 'lint the entire project',
+      task: require('./tasks/lint')
+    })
+
+    /*========*\
+    *  Builds  *
+    \*========*/
+
+    summary.define({
+      command: 'build:node',
+      description: 'builds the plugin for node use (commonjs)',
+      task: require('./tasks/build/node.js')
+    })
+
+    summary.define({
+      command: 'build:browser',
+      description: 'builds the plugin for browser use (umd)',
+      task: require('./tasks/build/browser.js')
+    })
+
+    /*=======*\
+    *  Watch  *
+    \*=======*/
+
+    summary.define({
+      command: 'test:watch',
+      description: 'test and watch for changes',
+      task: require('./tasks/test/watch')
+    })
+
+    summary.define({
+      command: 'lint:watch',
+      description: 'lint and watch for changes',
+      task: require('./tasks/lint/watch')
+    })
+  }
 }
+
+export default PluginRegistry;
