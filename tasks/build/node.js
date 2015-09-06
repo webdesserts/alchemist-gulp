@@ -1,4 +1,4 @@
-var webpack = require('gulp-webpack')
+var webpack = require('webpack-stream')
 var join = require('path').join
 
 module.exports = function () {

@@ -1,4 +1,4 @@
-var webpack = require('gulp-webpack');
+var webpack = require('webpack-stream');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var join = require('path').join;
