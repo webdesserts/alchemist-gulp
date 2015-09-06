@@ -1,9 +1,9 @@
-import webpack from 'gulp-webpack'
-import uglify from 'gulp-uglify'
-import rename from 'gulp-rename'
-import { join } from 'path'
+var webpack = require('gulp-webpack');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var join = require('path').join;
 
-export default function () {
+module.exports = function () {
   var gulp = this.gulp
   var config = this.config
 

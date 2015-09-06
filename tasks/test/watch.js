@@ -1,4 +1,4 @@
-export default function lint_watch(done) {
+module.exports = function lint_watch(done) {
   var gulp = this.gulp
 
   return gulp.series(

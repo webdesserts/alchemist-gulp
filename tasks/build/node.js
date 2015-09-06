@@ -1,7 +1,7 @@
-import webpack from 'gulp-webpack'
-import { join } from 'path'
+var webpack = require('gulp-webpack')
+var join = require('path').join
 
-export default function () {
+module.exports = function () {
   var gulp = this.gulp
   var config = this.config
 

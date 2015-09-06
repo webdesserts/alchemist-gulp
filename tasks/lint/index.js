@@ -1,8 +1,8 @@
-import jscs from 'gulp-jscs'
-import { warn } from '../../utils'
-import { join } from 'path'
+var jscs = require('gulp-jscs')
+var warn = require('../../utils').warn
+var join = require('path').join
 
-export default function lint() {
+module.exports = function lint() {
   var gulp = this.gulp
 
   return gulp.src([ 'gulpfile.js', 'tests/**/*.js', 'index.js' ])

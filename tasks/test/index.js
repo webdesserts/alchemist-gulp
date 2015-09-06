@@ -1,8 +1,8 @@
-import mocha from 'gulp-mocha'
-import { warn } from '../../utils'
-import { join } from 'path'
+var mocha = require('gulp-mocha')
+var warn = require('../../utils').warn
+var join = require('path').join
 
-export default function test_run() {
+module.exports = function test_run() {
   var gulp = this.gulp
 
   var files = [
